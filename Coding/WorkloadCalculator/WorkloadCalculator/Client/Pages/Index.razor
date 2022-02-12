@@ -1,7 +1,63 @@
 ﻿@page "/"
+@using WorkloadCalculator.Shared
+@inject HttpClient Http
 
-<h1>Hello, world!</h1>
+<h1>Workload calculator</h1>
 
-Welcome to your new app.
+History of previous Study plans.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@if (studyPlans == null || studyPlans.Count == 0)
+{
+    <p><em>Nothing planned yet.</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Courses</th>
+                <th>Hours per week</th>
+                <th>Total Weeks</th>
+                <th style="text-align:center">StartDate</th>
+                <th style="text-align:center">EndDate</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var plan in studyPlans.OrderByDescending(x => x.CreationDate))
+            {
+                <tr>
+                    <td>
+                        <table class="table-borderless">
+                            @foreach (var course in plan.Courses)
+                            {
+                                <tr>
+                                    <td>
+                                        @course.Name
+                                    </td>
+                                    <td>
+                                        @course.Duration
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    </td>
+                    <td>@plan.HoursPerWeekRecommended</td>
+                    <td>@plan.TotalWeeks</td>
+                    <td style="text-align:center">@plan.StartDate.Date</td>
+                    <td style="text-align:center">@plan.EndDate.Date</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code{
+    private List<StudyPlan> studyPlans;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        studyPlans = await Http.GetFromJsonAsync<List<StudyPlan>>("StudyPlan");
+    }
+}
+

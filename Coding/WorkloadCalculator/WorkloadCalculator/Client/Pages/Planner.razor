@@ -1,0 +1,210 @@
+﻿@page "/planner"
+@using WorkloadCalculator.Shared
+@inject HttpClient Http
+@inject IJSRuntime JsRuntime
+
+<h1>Plan your study hours</h1>
+
+<p>Choose the courses you want from the list below as well as a preferred start and end date for the study then hit 'Calculate'.</p>
+<p>We recommend doing at least 1 hour and not going above 4 hours per day.</p>
+
+<table class="table-borderless">
+    <thead>
+        <tr>
+            <th>
+                Start Date
+            </th>
+            <th>
+                End Date
+            </th>
+            <th>
+                Preferred Hours per Day
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <input type="date" @bind="startDate">
+            </td>
+            <td>
+                <input type="date" @bind="endDate">
+            </td>
+            <td>
+                <input type="number" @bind="preferredHoursPerDay"/>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<p></p>
+<button class="btn btn-primary" @onclick="Calculate">Calculate</button>
+<p></p>
+
+@if (selectedStudyPlan != null)
+{
+    <table>
+        <tr>
+            <td>
+                Total Hours:
+            </td>
+            <td></td>
+            <td style="text-align:right">
+                @selectedStudyPlan.TotalHoursCourses h
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Hours per week recommended for completion: 
+            </td>
+            <td></td>
+            <td style="text-align:right">
+                @HourPerWeekRecommended() h
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total weeks: 
+            </td>
+            <td></td>
+            <td style="text-align:right">
+                @TotalWeeks()
+            </td>
+        </tr>
+    </table>
+                    }
+
+@if (courses == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th style="text-align:center">Hours</th>
+                <th style="text-align:center">Include</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var course in courses)
+            {
+                <tr>
+                    <td>@course.Name</td>
+                    <td style="text-align:center">@course.Duration</td>
+                    <td style="text-align:center"><input type="checkbox" @onchange="eventArgs => { CheckboxClicked(course, eventArgs.Value); }" /><br /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Course> courses;
+    private List<Course> selectedCourses;
+    private DateTime startDate;
+    private DateTime endDate;
+    private StudyPlan selectedStudyPlan;
+    private int preferredHoursPerDay;
+
+    protected override async Task OnInitializedAsync()
+    {
+        courses = await Http.GetFromJsonAsync<List<Course>>("Course");
+        selectedCourses = new List<Course>();
+        startDate = DateTime.Now;
+        endDate = DateTime.Now.AddDays(1);
+    }
+
+    void CheckboxClicked(Course course, object checkedValue)
+    {
+        if ((bool)checkedValue)
+        {
+            if (!selectedCourses.Contains(course))
+            {
+                selectedCourses.Add(course);
+            }
+        }
+        else
+        {
+            if (selectedCourses.Contains(course))
+            {
+                selectedCourses.Remove(course);
+            }
+        }
+    }
+
+    private async Task Calculate()
+    {
+        if (selectedCourses == null || selectedCourses.Count == 0)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Please select at least one course for the calculation.");
+            return;
+        }
+
+        if (startDate < DateTime.Now.Date)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Invalid start date! Please choose a date today or after.");
+            return;
+        }
+
+        if (endDate.Date <= startDate.Date)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Invalid end date! Please choose a date higher than Start Date.");
+            return;
+        }
+
+        if (preferredHoursPerDay < 1 || preferredHoursPerDay > 4)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Invalid hours per day! Please choose a value between 1 and 4 hours.");
+            return;
+        }
+
+        var studyPlan = new StudyPlan(startDate, endDate, selectedCourses, preferredHoursPerDay);
+
+        if (studyPlan.TotalHoursTimeSpan < studyPlan.TotalHoursCourses)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "The period selected is invalid for the choosen courses! The amount of hours in the courses is bigger than the amount of hours in the whole period.");
+            return;
+        }
+
+        if (studyPlan.TotalHoursAvailable <= studyPlan.TotalHoursCourses)
+        {
+            if (preferredHoursPerDay < 4)
+            {
+                await JsRuntime.InvokeVoidAsync("alert", $"The period selected is invalid for the choosen courses! You would need either more than {preferredHoursPerDay} hours per day or a later End Date.");
+                return;
+            }
+            await JsRuntime.InvokeVoidAsync("alert", "The period selected is invalid for the choosen courses! You would need more than 4 hours per day to finish them.");
+            return;
+        }
+
+        var result = await Http.PostAsJsonAsync<StudyPlan>("StudyPlan", studyPlan);
+
+        if (result.IsSuccessStatusCode)
+        {
+            selectedStudyPlan = studyPlan;
+            return;
+        }
+
+        await JsRuntime.InvokeVoidAsync("alert", "An unexpected error ocurred. Please try again.");
+        return;
+    }
+
+    private int HourPerWeekRecommended()
+    {
+        return preferredHoursPerDay * 7;
+    }
+
+    private int TotalWeeks()
+    {
+        if (selectedStudyPlan.TotalHoursAvailable >= 28)
+        {
+            return Convert.ToInt32(Math.Ceiling((double)selectedStudyPlan.TotalHoursAvailable / 28));
+        }
+
+        return 1;
+    }
+
+}
