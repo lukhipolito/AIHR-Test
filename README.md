@@ -4,7 +4,7 @@ The Tests for AIHR.
 ## Coding
 
 
-###Reasonings:
+### Reasonings:
 
 This project is supposed to be a fully functional MVP of the given problem.
 Because of that, the technology chosen for the whole project is .NET, which the developer has the most experience and confort working with, 
@@ -32,7 +32,7 @@ There should be a connection with a database, but the choice was really open. To
 Everything built is fully functional and the project tries to avoid most of the possible errors. It's not perfect but handles the problem given.
 
 
-###Suggestions for the future:
+### Suggestions for the future:
 - Improve the logics of Calculate method;
 - Develop a function app to host the courses's business rules and logic;
 - Develop a function app to host the study plans's business rules and logic;
