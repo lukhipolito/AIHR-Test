@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using AIHR_Logic.Interfaces;
+using System.Collections.Generic;
 using static AIHR_Logic.Models.SolarSystem;
 
 namespace AIHR_Logic.Models.Planets.TerrestrialPlanets
 {
-    public sealed class Earth : TerrestrialPlanet
+    public sealed class Earth : TerrestrialPlanet, ICanSustainLife, IHasSatelliteMoon, ICanBeTerraformed
     {
         public Earth()
         {
@@ -19,5 +20,7 @@ namespace AIHR_Logic.Models.Planets.TerrestrialPlanets
             var moon = new Satellite { Name = "Moon" };
             this.Satellites.Add(moon);
         }
+
+        public IList<Satellite> Satellites { get; set; }
     }
 }

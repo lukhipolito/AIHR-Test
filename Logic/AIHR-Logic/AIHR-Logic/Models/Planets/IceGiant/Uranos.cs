@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using AIHR_Logic.Interfaces;
+using System.Collections.Generic;
 using static AIHR_Logic.Models.SolarSystem;
 
 namespace AIHR_Logic.Models.Planets.IceGiants
 {
-    public sealed  class Uranus : IceGiant
+    public sealed  class Uranus : IceGiant, IHasSatelliteMoon
     {
         public Uranus()
         {
@@ -20,5 +21,7 @@ namespace AIHR_Logic.Models.Planets.IceGiants
 
             this.Satellites = new List<Satellite>();
         }
+
+        public IList<Satellite> Satellites { get; set; }
     }
 }

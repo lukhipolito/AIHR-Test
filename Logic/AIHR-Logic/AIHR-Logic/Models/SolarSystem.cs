@@ -33,12 +33,12 @@ namespace AIHR_Logic.Models
 
         public abstract class Planet : CelestialBody
         {
-            public IList<Satellite> Satellites { get; set; }
+
         }
 
         public abstract class DwarfPlanet : CelestialBody
         {
-            public IList<Satellite> Satellites { get; set; }
+
         }
         #endregion
 

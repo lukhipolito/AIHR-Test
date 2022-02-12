@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using AIHR_Logic.Interfaces;
+using System.Collections.Generic;
 using static AIHR_Logic.Models.SolarSystem;
 namespace AIHR_Logic.Models.DwarfPlanets
 {
-    public sealed class Pluto : DwarfPlanet
+    public sealed class Pluto : DwarfPlanet, IHasSatelliteMoon
     {
         public Pluto()
         {
@@ -31,5 +32,7 @@ namespace AIHR_Logic.Models.DwarfPlanets
             var styx = new Satellite { Name = "Styx" };
             this.Satellites.Add(styx);
         }
+
+        public IList<Satellite> Satellites { get; set; }
     }
 }

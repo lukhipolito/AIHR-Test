@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using AIHR_Logic.Interfaces;
+using System.Collections.Generic;
 using static AIHR_Logic.Models.SolarSystem;
 namespace AIHR_Logic.Models.Planets.IceGiants
 {
-    public sealed class Neptune : IceGiant
+    public sealed class Neptune : IceGiant, IHasSatelliteMoon
     {
         public Neptune()
         {
@@ -21,5 +22,7 @@ namespace AIHR_Logic.Models.Planets.IceGiants
             var tritron = new Satellite { Name = "Tritron" };
             this.Satellites.Add(tritron);
         }
+
+        public IList<Satellite> Satellites { get; set; }
     }
 }

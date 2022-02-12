@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using AIHR_Logic.Interfaces;
+using System.Collections.Generic;
 using static AIHR_Logic.Models.SolarSystem;
 namespace AIHR_Logic.Models.Planets.TerrestrialPlanets
 {
-    public sealed class Mars : TerrestrialPlanet 
+    public sealed class Mars : TerrestrialPlanet, IHasSatelliteMoon, ICanBeTerraformed
     {
         public Mars()
         {
@@ -20,6 +21,10 @@ namespace AIHR_Logic.Models.Planets.TerrestrialPlanets
 
             var deimos = new Satellite { Name = "Deimos" };
             this.Satellites.Add(deimos);
+
+            this.Colonize();
         }
+
+        public IList<Satellite> Satellites { get; set; }
     }
 }

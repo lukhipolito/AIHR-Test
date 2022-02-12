@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using AIHR_Logic.Interfaces;
+using System.Collections.Generic;
 using static AIHR_Logic.Models.SolarSystem;
 
 namespace AIHR_Logic.Models.Planets.GasGiants
 {
-    public sealed class Saturn : GasGiant
+    public sealed class Saturn : GasGiant, IHasSatelliteMoon
     {
         public Saturn()
         {
@@ -23,5 +24,7 @@ namespace AIHR_Logic.Models.Planets.GasGiants
             var titan = new Satellite { Name = "Titan" };
             this.Satellites.Add(titan);
         }
+
+        public IList<Satellite> Satellites { get; set; }
     }
 }
