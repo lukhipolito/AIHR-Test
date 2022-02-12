@@ -6,6 +6,14 @@ namespace AIHR_Logic.Models.Planets.GasGiants
     {
         public Jupiter()
         {
+            this.Name = "Jupiter";
+
+            // Distance in KM
+            this.DistanceFromSun = 745625585;
+
+            // Period in earth days
+            this.OrbitalPeriod = 4328.9;
+
             //Jupiter has 80 moons.
             //For the sake of avoiding repetition we are adding just the four biggest, a group known as Galilean Moons.
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AIHR_Logic.Models;
+using System;
 
 namespace AIHR_Logic
 {
@@ -6,6 +7,9 @@ namespace AIHR_Logic
     {
         static void Main(string[] args)
         {
+            var celestialBodies = SolarSystem.GetAllCelestialBodies();
+
+
             Console.WriteLine("Hello World!");
         }
     }

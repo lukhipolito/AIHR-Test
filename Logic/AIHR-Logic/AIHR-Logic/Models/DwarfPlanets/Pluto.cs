@@ -6,6 +6,14 @@ namespace AIHR_Logic.Models.DwarfPlanets
     {
         public Pluto()
         {
+            this.Name = "Pluto";
+
+            // Distance in KM
+            this.DistanceFromSun = 5155516160;
+
+            // Period in earth days
+            this.OrbitalPeriod = 90844.85;
+
             this.Satellites = new List<Satellite>();
 
             var charron = new Satellite { Name = "Charron" };

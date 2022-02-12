@@ -7,6 +7,14 @@ namespace AIHR_Logic.Models.Planets.GasGiants
     {
         public Saturn()
         {
+            this.Name = "Saturn";
+
+            // Distance in KM
+            this.DistanceFromSun = 1482631855;
+
+            // Period in earth days
+            this.OrbitalPeriod = 10749.25;
+
             //Saturn has more than 80 moons.
             //For the sake of avoiding repetition we are adding just the most notable and distinguishable one: Titan
 
