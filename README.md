@@ -1,10 +1,10 @@
-### AIHR-Test
+## AIHR-Test
 The Tests for AIHR.
 
 ## Coding
 
 
-#Reasonings:
+###Reasonings:
 
 This project is supposed to be a fully functional MVP of the given problem.
 Because of that, the technology chosen for the whole project is .NET, which the developer has the most experience and confort working with, 
@@ -32,13 +32,13 @@ There should be a connection with a database, but the choice was really open. To
 Everything built is fully functional and the project tries to avoid most of the possible errors. It's not perfect but handles the problem given.
 
 
-#Suggestions for the future:
--- Improve the logics of Calculate method;
--- Develop a function app to host the courses's business rules and logic;
--- Develop a function app to host the study plans's business rules and logic;
--- Develop a different client frontend with a more popular SPA technology for guaranteed evolution and qualified professionals working on it;
--- Develop a better arquitecture, with proper workflows, data modeling, and error-proof;
--- Host the application as a CDN-enabled hosted web page on a cloud, calling the microservices via Lambda functions (in the case of AWS) or any other serverless technology for a better reuse of services;
--- Improve UI/UX;
--- Implement an improved alert/message system. This current project makes javascript calls to the 'alert()' function. This can be changed into some kind of 'toast' like the ones present in modern popular SPAs;
--- Implement a proper database. The most common recommendation being a no-SQL one due to a higher amount of writing than reading
+###Suggestions for the future:
+- Improve the logics of Calculate method;
+- Develop a function app to host the courses's business rules and logic;
+- Develop a function app to host the study plans's business rules and logic;
+- Develop a different client frontend with a more popular SPA technology for guaranteed evolution and qualified professionals working on it;
+- Develop a better arquitecture, with proper workflows, data modeling, and error-proof;
+- Host the application as a CDN-enabled hosted web page on a cloud, calling the microservices via Lambda functions (in the case of AWS) or any other serverless technology for a better reuse of services;
+- Improve UI/UX;
+- Implement an improved alert/message system. This current project makes javascript calls to the 'alert()' function. This can be changed into some kind of 'toast' like the ones present in modern popular SPAs;
+- Implement a proper database. The most common recommendation being a no-SQL one due to a higher amount of writing than reading
